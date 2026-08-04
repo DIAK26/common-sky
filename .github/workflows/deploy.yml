@@ -8,12 +8,12 @@ on:
 jobs:
   deploy:
     runs-on: ubuntu-latest
-    
+
     steps:
       # Code vom Repository holen
       - name: Checkout code
         uses: actions/checkout@v3
-      
+
       # AWS Credentials konfigurieren
       - name: Configure AWS credentials
         uses: aws-actions/configure-aws-credentials@v2
@@ -21,7 +21,7 @@ jobs:
           aws-access-key-id: ${{ secrets.AWS_ACCESS_KEY_ID }}
           aws-secret-access-key: ${{ secrets.AWS_SECRET_ACCESS_KEY }}
           aws-region: eu-central-1
-      
+
       # Dateien zu S3 synchronisieren
       - name: Deploy to S3
         run: |
@@ -30,7 +30,14 @@ jobs:
             --exclude ".git/" \
             --exclude ".github/" \
             --exclude "*.md"
-      
+
+      # CloudFront Cache leeren ← NEU
+      - name: Invalidate CloudFront cache
+        run: |
+          aws cloudfront create-invalidation \
+            --distribution-id E3GMFP7WGFMQWJ \
+            --paths "/*"
+
       # Erfolgsmeldung
       - name: Deployment complete
-        run: echo "✅ Website deployed to S3!"
+        run: echo "✅ Website deployed to S3 and CloudFront cache cleared!"
