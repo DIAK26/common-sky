@@ -111,13 +111,13 @@ body {
    ============================================ */
 
 @keyframes pulse {
-  0%   { opacity: 0.6; }
+  0%   { opacity: 0.5; }
   50%  { opacity: 1.0; }
-  100% { opacity: 0.6; }
+  100% { opacity: 0.5; }
 }
 
 .bg-index {
-  animation: pulse 8s ease-in-out infinite;
+  animation: pulse 5s ease-in-out infinite;
 }
 
 /* ============================================
